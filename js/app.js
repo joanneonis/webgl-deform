@@ -10,7 +10,8 @@ const generalSettings = {
 		x: 20,
 		y: -5,
 		z: 15
-	}
+	},
+	bgColor: "rgb(65,65,65)"
 };
 
 var
@@ -30,19 +31,23 @@ function rotateObject(object, degreeX = 0, degreeY = 0, degreeZ = 0) {
 	object.rotateZ(THREE.Math.degToRad(degreeZ));
 }
 
-
 window.addEventListener('load', function () {
 
+	// container for canvas element
 	container = document.getElementById("container");
 
+	// scene to draw upon
 	scene = new THREE.Scene();
 
-	const fogColor = "rgb(65,65,65)";
+	// fog settings
+	const fogColor = generalSettings.bgColor;
 	scene.fog = new THREE.Fog(fogColor, 0, generalSettings.fogIntencity);
 
+	// camera settings
 	camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
 	camera.position.z = 50; // 70
 
+	// material options
 	material = new THREE.ShaderMaterial({
 		uniforms: {
 			transformScale: {
@@ -60,10 +65,6 @@ window.addEventListener('load', function () {
 			opacity2: {
 				type: 'f',
 				value: 0,
-			},
-			color1: {
-				type: "c",
-				value: new THREE.Color(0xffffff),
 			},
 			radius1: {
 				type: "f",
@@ -99,11 +100,10 @@ window.addEventListener('load', function () {
 		fog: true,
 	});
 
-	// transparency
+	// enable transparency in the material
 	material.transparent = true;
-	// material.lights = true;
 
-
+	// init sphere with materialoptions
 	mesh = new THREE.Mesh(
 		new THREE.IcosahedronGeometry(20, 4),
 		material
@@ -112,41 +112,35 @@ window.addEventListener('load', function () {
 	mesh.position.set(generalSettings.position.x, generalSettings.position.y, generalSettings.position.z);
 	rotateObject(mesh, -10, 160, 10);
 
-	renderer = new THREE.WebGLRenderer({
-		alpha: true,
-		antialias: true
-	});
+	// init rendering
+	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setPixelRatio(window.devicePixelRatio);
-
 	renderer.setClearColor(scene.fog.color);
-
 	container.appendChild(renderer.domElement);
 
-	var controls = new THREE.OrbitControls(camera, renderer.domElement);
+	// TODO orbitcontrols (only for testing)
+	// var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
 	onWindowResize();
 	window.addEventListener('resize', onWindowResize);
 
 	render();
-
 });
 
+// responsiveness
 function onWindowResize() {
-
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	camera.aspect = window.innerWidth / window.innerHeight;
 	camera.updateProjectionMatrix();
-
 }
 
 function render() {
-
+	// set time/speed for materials
 	const speedFactor = generalSettings.speed;
-
 	material.uniforms['time'].value = speedFactor * (Date.now() - start);
 
+	// render & animate
 	renderer.render(scene, camera);
 	requestAnimationFrame(render);
-
 }
