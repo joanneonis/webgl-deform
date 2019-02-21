@@ -1,6 +1,6 @@
 const generalSettings = {
 	opacity: .5,
-	speed: .0004,
+	speed: .004,
 	transformIntencity: 10,
 	transformScale: .2,
 	dotSize: .2,
