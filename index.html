@@ -163,7 +163,7 @@
 
     vUv = uv;
 
-    noise = 10.0 *  -.10 * turbulence( transformScale * normal + time );
+    noise = 0 *  -.10 * turbulence( transformScale * normal + time );
     float b = transformIntencity * pnoise( 0.05 * position + vec3( 2.0 * time ), vec3( 100.0 ) );
     float displacement = - 10. * noise + b;
 
