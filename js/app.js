@@ -2,7 +2,7 @@ const generalSettings = {
 	opacity: .5,
 	speed: .00004,
 	transformIntencity: 10,
-	transformScale: .2,
+	transformScale: 0,
 	dotSize: .2,
 	dotAmount: 80,
 	fogIntencity: 35,
